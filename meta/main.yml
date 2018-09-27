@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: ambari_server
   author: Teerawat Namsricharoensuk
   description: Ansible role to install and configure Apache Ambari Server
   license: MIT
