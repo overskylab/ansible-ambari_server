@@ -23,7 +23,7 @@ Example Playbook
 
     - hosts: all
       roles:
-        - sertis.ambari
+        - overskylab.ambari
 
 
 License
