@@ -1,0 +1,7 @@
+---
+ambari_server_service_name: ambari-server
+
+ambari_server_apt_package: ambari-server
+ambari_server_apt_dependencies: []
+
+ambari_server_apt_key: B9733A7A07513CAD

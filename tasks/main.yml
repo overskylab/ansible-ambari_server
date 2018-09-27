@@ -1,0 +1,17 @@
+---
+- name: Include OS family specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}.yml"
+    - default.yml
+  
+- import_tasks: ambari_server_pre.yml
+
+- import_tasks: ambari_server_install.yml
+- import_tasks: ambari_server_install_hdf.yml
+  when: ambari_server_mpack_enable
+
+- block: # Config ambari
+  - import_tasks: ambari_server_post.yml
+  tags:
+    - ambari-server-config

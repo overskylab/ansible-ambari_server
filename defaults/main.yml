@@ -1,0 +1,27 @@
+---
+ambari_server_version: "2.7.0.0"
+
+ambari_server_lib_dir: "/var/lib/ambari-server"
+ambari_server_config_dir: "/etc/ambari-server/conf"
+ambari_server_config_jvm_dir: "{{ ambari_server_lib_dir }}"
+ambari_server_config_jvm_env_file_path: "{{ ambari_server_config_jvm_dir }}/ambari-env.sh"
+
+ambari_server_repo_download_url: "http://public-repo-1.hortonworks.com/ambari/ubuntu16/2.x/updates/{{ ambari_server_version }}/ambari.list"
+
+ambari_server_jdbc_driver: embedded # embedded|oracle|mysql|mssql|postgres|sqlanywhere
+ambari_server_jdbc_port: 5432
+ambari_server_jdbc_db_name: ambari
+ambari_server_jdbc_db_username: ambari
+ambari_server_jdbc_db_password: CHAGEME
+ambari_server_jdbc_driver_url: "https://jdbc.postgresql.org/download/{{ ambari_server_jdbc_driver_filename }}"
+ambari_server_jdbc_driver_filename: postgresql-42.2.4.jar
+ambari_server_jdbc_driver_file_path: "{{ ambari_server_lib_dir }}/{{ ambari_server_jdbc_driver_filename }}"
+
+ambari_server_min_memory: "512m"
+ambari_server_max_memory: "2048m"
+
+# Enabling mpack will change ambari server to control HDF cluster
+ambari_server_mpack_enable: false
+ambari_server_mpack_file_name: hdf-ambari-mpack-3.2.0.0-520.tar.gz
+ambari_server_mpack_file_path: "/tmp/{{ ambari_server_mpack_file_name }}"
+ambari_server_mpack_download_url: "http://public-repo-1.hortonworks.com/HDF/ubuntu16/3.x/updates/3.2.0.0/tars/hdf_ambari_mp/{{ ambari_server_mpack_file_name }}"

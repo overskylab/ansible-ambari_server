@@ -1,0 +1,16 @@
+---
+- name: Tuning minimum memory
+  replace:
+    dest: "{{ ambari_server_config_jvm_env_file_path }}"
+    regexp: 'AMBARI_JVM_ARGS="(.* )?-Xms[^ ]*(.*)"'
+    replace: 'AMBARI_JVM_ARGS="\1-Xms{{ ambari_server_min_memory }}\2"'
+  when: ambari_server_min_memory is defined
+  notify: Restart Ambari Server 
+
+- name: Tuning maximum memory
+  replace:
+    dest: "{{ ambari_server_config_jvm_env_file_path }}"
+    regexp: 'AMBARI_JVM_ARGS="(.* )?-Xmx[^ ]*(.*)"'
+    replace: 'AMBARI_JVM_ARGS="\1-Xmx{{ ambari_server_max_memory }}\2"'
+  when: ambari_server_max_memory is defined
+  notify: Restart Ambari Server

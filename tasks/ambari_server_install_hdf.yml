@@ -1,0 +1,11 @@
+---
+- name: Download HDF management pack
+  get_url:
+    url: "{{ ambari_server_mpack_download_url }}"
+    dest: /etc/apt/sources.list.d/ambari.list
+
+- name: Setup ambari server (standalone)
+  command: "ambari-server install-mpack -s --mpack={{ ambari_server_mpack_file_path }}"
+  when: 
+    - ambari_server_mpack_enable
+    - ambari_server_mpack_file_path is defined

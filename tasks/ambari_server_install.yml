@@ -1,0 +1,48 @@
+---
+- name: Install ambari packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - "{{ ambari_server_apt_package }}"
+    - "{{ ambari_server_apt_dependencies }}"
+
+- block: # installing ambari server 
+  - name: Setup ambari server (standalone)
+    command: "ambari-server setup -s"
+    when: 
+      - ambari_server_jdbc_driver is defined
+      - ambari_server_jdbc_driver == "embedded"
+
+  - name: Download JDBC driver file ({{ ambari_server_jdbc_driver_filename }})
+    get_url:
+      url: "{{ ambari_server_jdbc_driver_url }}"
+      dest: "{{ ambari_server_jdbc_driver_file_path }}"
+    when: 
+      - ambari_server_jdbc_driver is defined
+      - ambari_server_jdbc_driver != "embedded"
+
+  - name: Setup ambari server with external database
+    command: >
+      ambari-server setup -s 
+      --jdbc-db={{ ambari_server_jdbc_driver }} --jdbc-driver={{ ambari_server_jdbc_driver_file_path }} 
+      --database={{ ambari_server_jdbc_driver }} 
+      --databasehost={{ ambari_server_jdbc_host }}
+      --databaseport={{ ambari_server_jdbc_port }}
+      --databasename={{ ambari_server_jdbc_db_name }}
+      --databaseusername={{ ambari_server_jdbc_db_username }}
+      --databasepassword={{ ambari_server_jdbc_db_password }}
+    when: 
+      - ambari_server_jdbc_driver is defined
+      - ambari_server_jdbc_driver != "embedded"
+
+- name: Check ambari server status
+  command: "ambari-server status"
+  register: _status
+  ignore_errors: yes
+
+- name: Start ambari server
+  command: "ambari-server start"
+  when: "'Ambari Server running' not in _status.stdout"
+
