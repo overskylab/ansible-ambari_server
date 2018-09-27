@@ -35,4 +35,3 @@ Author Information
 ------------------
 
 Teerawat Namsricharoensuk
-Sertis Co., Ltd.
